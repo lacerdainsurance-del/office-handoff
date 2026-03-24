@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
-  "https://YOUR-PROJECT.supabase.co",
-  "YOUR-ANON-KEY"
+  "https://hzabdrujojjqnyahkblj.supabase.co",
+  "sb_publishable_6nIoa0iN9r4xvr2hHlvI0A_XsrODMx1"
 );
 
 export default function App() {
