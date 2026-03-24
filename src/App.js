@@ -82,7 +82,7 @@ export default function App() {
     title: "",
     details: "",
     employee: "",
-    office: "Genesee",
+    office: "Insurance",
     shift: "Morning",
     priority: "Medium",
   });
@@ -177,7 +177,7 @@ export default function App() {
       title: "",
       details: "",
       employee: "",
-      office: "Genesee",
+      office: "Insurance",
       shift: "Morning",
       priority: "Medium",
     });
@@ -356,7 +356,7 @@ export default function App() {
                     style={inputStyle}
                     value={form.employee}
                     onChange={(e) => setForm({ ...form, employee: e.target.value })}
-                    placeholder="Maria"
+                    placeholder="Cristina"
                   />
                 </div>
                 <div>
@@ -366,10 +366,8 @@ export default function App() {
                     value={form.office}
                     onChange={(e) => setForm({ ...form, office: e.target.value })}
                   >
-                    <option>Genesee</option>
-                    <option>Warren</option>
-                    <option>Main Office</option>
-                    <option>Remote</option>
+                    <option>Insurance</option>
+                    <option>Real_Estate</option>
                   </select>
                 </div>
                 <div>
