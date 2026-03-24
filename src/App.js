@@ -2,19 +2,19 @@ import React, { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
-  "https://hzabdrujojjqnyahkblj.supabase.co",
-  "sb_publishable_6nIoa0iN9r4xvr2hHlvI0A_XsrODMx1"
+  "https://YOUR-PROJECT.supabase.co",
+  "YOUR-ANON-KEY"
 );
 
 export default function App() {
-  const [session, setSession] = useState<any>(null);
+  const [session, setSession] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [items, setItems] = useState<any[]>([]);
+  const [items, setItems] = useState([]);
   const [form, setForm] = useState({
     title: "",
     details: "",
-    employee: "",
+    employee: ""
   });
 
   useEffect(() => {
@@ -24,57 +24,88 @@ export default function App() {
   }, []);
 
   async function signIn() {
-    await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      alert(error.message);
+      return;
+    }
     window.location.reload();
   }
 
   async function loadItems() {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("handoff_items")
       .select("*")
       .order("created_at", { ascending: false });
 
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
     setItems(data || []);
   }
 
-  async function addItem(e: any) {
+  async function addItem(e) {
     e.preventDefault();
-    await supabase.from("handoff_items").insert({
-      ...form,
-      completed: false,
+
+    const { error } = await supabase.from("handoff_items").insert({
+      title: form.title,
+      details: form.details,
+      employee: form.employee,
+      completed: false
     });
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
     setForm({ title: "", details: "", employee: "" });
     loadItems();
   }
 
-  async function toggle(id: string, val: boolean) {
-    await supabase
+  async function toggle(id, completed) {
+    const { error } = await supabase
       .from("handoff_items")
-      .update({ completed: !val })
+      .update({ completed: !completed })
       .eq("id", id);
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
     loadItems();
   }
 
   if (!session) {
     return (
-      <div style={{ padding: 20 }}>
-        <h2>Login</h2>
-        <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-        <input
-          type="password"
-          placeholder="Password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button onClick={signIn}>Sign In</button>
+      <div style={{ padding: 20, fontFamily: "Arial" }}>
+        <h2>Office Handoff Login</h2>
+        <div style={{ display: "grid", gap: 10, maxWidth: 320 }}>
+          <input
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button onClick={signIn}>Sign In</button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: 20 }}>
+    <div style={{ padding: 20, fontFamily: "Arial" }}>
       <h1>Office Handoff</h1>
 
-      <form onSubmit={addItem}>
+      <form onSubmit={addItem} style={{ display: "grid", gap: 10, maxWidth: 500, marginBottom: 20 }}>
         <input
           placeholder="Title"
           value={form.title}
@@ -93,11 +124,13 @@ export default function App() {
         <button type="submit">Add</button>
       </form>
 
-      <button onClick={loadItems}>Refresh</button>
+      <button onClick={loadItems} style={{ marginBottom: 20 }}>Refresh</button>
 
       {items.map((item) => (
-        <div key={item.id}>
-          <b>{item.title}</b> - {item.details} ({item.employee})
+        <div key={item.id} style={{ border: "1px solid #ccc", padding: 10, marginBottom: 10 }}>
+          <strong>{item.title}</strong>
+          <div>{item.details}</div>
+          <div>{item.employee}</div>
           <button onClick={() => toggle(item.id, item.completed)}>
             {item.completed ? "Undo" : "Done"}
           </button>
