@@ -701,24 +701,7 @@ const pendingMatters = filteredItems.filter(
   </div>
 </div>
 
-              <div>
-                <h3 style={{ marginTop: 0, marginBottom: 12 }}>Pending Matters</h3>
-                {pendingMatters.length === 0 ? (
-                  <div style={{ color: "#666" }}>No pending matters found.</div>
-                ) : (
-                  pendingMatters.map((item) => (
-                    <ItemCard
-                      key={item.id}
-                      item={item}
-                      isManager={isManager}
-                      onEdit={startEdit}
-                      onToggle={toggleCompleted}
-                      onTogglePin={togglePinned}
-                      onDelete={deleteItem}
-                    />
-                  ))
-                )}
-              </div>
+              
             </div>
           </div>
         </div>
