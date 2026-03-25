@@ -185,6 +185,9 @@ export default function App() {
     if (error) setError(error.message);
   }
 
+  function handlePrint() {
+  window.print();
+}
 
   async function signOut() {
     await supabase.auth.signOut();
