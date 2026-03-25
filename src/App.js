@@ -441,20 +441,20 @@ const pendingMatters = filteredItems.filter(
           </div>
 
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-            {editId ? (
-              <button onClick={resetForm} style={buttonSecondary}>
-                Cancel Edit
-              </button>
-            ) : null}
+  {editId ? (
+    <button onClick={resetForm} style={buttonSecondary}>
+      Cancel Edit
+    </button>
+  ) : null}
 
-            <button onClick={handlePrint} style={buttonSecondary}>
-              Print Report
-            </button>
+  <button onClick={handlePrint} style={buttonSecondary}>
+    Print Report
+  </button>
 
-            <button onClick={signOut} style={buttonSecondary}>
-              Sign Out
-            </button>
-          </div>
+  <button onClick={signOut} style={buttonSecondary}>
+    Sign Out
+  </button>
+</div>
         </div>
 
         {error ? <div style={{ ...errorStyle, marginBottom: 20 }}>{error}</div> : null}
