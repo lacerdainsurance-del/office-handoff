@@ -21,6 +21,12 @@ function formatDate(value) {
     return value;
   }
 }
+function handlePrint() {
+  window.print();
+}
+
+const todayLabel = new Date().toLocaleDateString();
+
 function normalizeType(value) {
   const v = String(value || "").trim().toLowerCase();
 
@@ -178,6 +184,7 @@ export default function App() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) setError(error.message);
   }
+
 
   async function signOut() {
     await supabase.auth.signOut();
@@ -439,6 +446,11 @@ const pendingMatters = filteredItems.filter(
                 Cancel Edit
               </button>
             ) : null}
+
+            <button onClick={handlePrint} style={buttonSecondary}>
+              Print Report
+            </button>
+
             <button onClick={signOut} style={buttonSecondary}>
               Sign Out
             </button>
@@ -638,25 +650,56 @@ const pendingMatters = filteredItems.filter(
               </select>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
-              <div>
-                <h3 style={{ marginTop: 0, marginBottom: 12 }}>Notes</h3>
-                {notes.length === 0 ? (
-                  <div style={{ color: "#666" }}>No notes found.</div>
-                ) : (
-                  notes.map((item) => (
-                    <ItemCard
-                      key={item.id}
-                      item={item}
-                      isManager={isManager}
-                      onEdit={startEdit}
-                      onToggle={toggleCompleted}
-                      onTogglePin={togglePinned}
-                      onDelete={deleteItem}
-                    />
-                  ))
-                )}
-              </div>
+           <div id="print-report">
+  <div className="print-header">
+    <h1>Office Shift Handoff Report</h1>
+
+    <div className="print-meta">
+      <div><strong>Date:</strong> {new Date().toLocaleDateString()}</div>
+      <div><strong>Prepared by:</strong> {session.user.email}</div>
+      <div><strong>Open Items:</strong> {openCount}</div>
+      <div><strong>Pinned:</strong> {pinnedCount}</div>
+    </div>
+  </div>
+
+  <div className="print-section">
+    <h2>Notes</h2>
+    {notes.length === 0 ? (
+      <div>No notes found.</div>
+    ) : (
+      notes.map((item) => (
+        <ItemCard
+          key={item.id}
+          item={item}
+          isManager={isManager}
+          onEdit={startEdit}
+          onToggle={toggleCompleted}
+          onTogglePin={togglePinned}
+          onDelete={deleteItem}
+        />
+      ))
+    )}
+  </div>
+
+  <div className="print-section">
+    <h2>Pending Matters</h2>
+    {pendingMatters.length === 0 ? (
+      <div>No pending matters found.</div>
+    ) : (
+      pendingMatters.map((item) => (
+        <ItemCard
+          key={item.id}
+          item={item}
+          isManager={isManager}
+          onEdit={startEdit}
+          onToggle={toggleCompleted}
+          onTogglePin={togglePinned}
+          onDelete={deleteItem}
+        />
+      ))
+    )}
+  </div>
+</div>
 
               <div>
                 <h3 style={{ marginTop: 0, marginBottom: 12 }}>Pending Matters</h3>
