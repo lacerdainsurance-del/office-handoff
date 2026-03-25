@@ -21,6 +21,15 @@ function formatDate(value) {
     return value;
   }
 }
+function normalizeType(value) {
+  const v = String(value || "").trim().toLowerCase();
+
+  if (v === "pending matter" || v === "pending" || v === "pending matters") {
+    return "Pending Matter";
+  }
+
+  return "Note";
+}
 
 function priorityColor(priority) {
   if (priority === "High") {
@@ -221,18 +230,18 @@ export default function App() {
     }
 
     const payload = {
-      type: form.type,
-      title: form.title.trim(),
-      details: form.details.trim(),
-      follow_up_needed: form.follow_up_needed.trim(),
-      employee: form.employee.trim(),
-      assigned_to: form.assigned_to.trim(),
-      office: form.office,
-      shift: form.shift,
-      priority: form.priority,
-      due_date: form.due_date || null,
-      pinned: form.pinned
-    };
+  type: normalizeType(form.type),
+  title: form.title.trim(),
+  details: form.details.trim(),
+  follow_up_needed: form.follow_up_needed.trim(),
+  employee: form.employee.trim(),
+  assigned_to: form.assigned_to.trim(),
+  office: form.office,
+  shift: form.shift,
+  priority: form.priority,
+  due_date: form.due_date || null,
+  pinned: form.pinned
+};
 
     if (editId) {
       const { error } = await supabase
@@ -367,8 +376,10 @@ export default function App() {
     return result;
   }, [items, search, officeFilter, statusFilter]);
 
-  const notes = filteredItems.filter((item) => item.type === "Note");
-  const pendingMatters = filteredItems.filter((item) => item.type === "Pending Matter");
+  const notes = filteredItems.filter((item) => normalizeType(item.type) === "Note");
+const pendingMatters = filteredItems.filter(
+  (item) => normalizeType(item.type) === "Pending Matter"
+);
   const openCount = items.filter((item) => !item.completed).length;
   const pinnedCount = items.filter((item) => item.pinned && !item.completed).length;
 
