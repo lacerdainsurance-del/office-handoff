@@ -11,11 +11,12 @@
   <style>
 @media print {
 
-  /* hide everything except report */
+  /* Hide everything */
   body * {
     visibility: hidden;
   }
 
+  /* Show ONLY report */
   #print-report, #print-report * {
     visibility: visible;
   }
@@ -27,34 +28,62 @@
     width: 100%;
   }
 
-  /* clean look */
   body {
-    font-family: Arial;
+    font-family: Arial, sans-serif;
     background: white !important;
-    color: black;
+    color: black !important;
   }
 
-  button, input, textarea, select {
+  /* Hide buttons + inputs */
+  button,
+  form,
+  input,
+  textarea,
+  select,
+  .no-print {
     display: none !important;
   }
 
+  /* Header styling */
   .print-header {
     border-bottom: 2px solid #000;
+    padding-bottom: 12px;
     margin-bottom: 20px;
-    padding-bottom: 10px;
   }
 
+  .print-header h1 {
+    margin: 0 0 10px 0;
+  }
+
+  .print-meta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 20px;
+    font-size: 12px;
+  }
+
+  /* Section styling */
   .print-section {
-    margin-top: 20px;
+    margin-top: 24px;
   }
 
+  .print-section h2 {
+    border-bottom: 1px solid #999;
+    padding-bottom: 6px;
+  }
+
+  /* Each note */
   .print-item {
-    border: 1px solid #ccc;
+    border: 1px solid #bbb !important;
     padding: 10px;
     margin-bottom: 10px;
-    break-inside: avoid;
+    background: white !important;
+    page-break-inside: avoid;
   }
 
+  @page {
+    margin: 0.5in;
+  }
 }
 </style>
 </html>
