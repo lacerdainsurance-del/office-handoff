@@ -519,7 +519,7 @@ const pendingMatters = filteredItems.filter(
                   style={{ ...inputStyle, minHeight: 160, resize: "vertical", lineHeight: 1.5 }}
                   value={form.details}
                   onChange={(e) => setForm({ ...form, details: e.target.value })}
-                  placeholder="Write the full note for the next shift."
+                  placeholder="Write a full note for the next shift."
                 />
               </div>
 
@@ -529,7 +529,7 @@ const pendingMatters = filteredItems.filter(
                   style={{ ...inputStyle, minHeight: 110, resize: "vertical", lineHeight: 1.5 }}
                   value={form.follow_up_needed}
                   onChange={(e) => setForm({ ...form, follow_up_needed: e.target.value })}
-                  placeholder="Separate follow-up notes, reminders, or next steps."
+                  placeholder="Leave this blank for the assigned employee to respond."
                 />
               </div>
 
@@ -540,7 +540,7 @@ const pendingMatters = filteredItems.filter(
                     style={inputStyle}
                     value={form.employee}
                     onChange={(e) => setForm({ ...form, employee: e.target.value })}
-                    placeholder="Name"
+                    placeholder="Your Name"
                   />
                 </div>
 
@@ -550,7 +550,7 @@ const pendingMatters = filteredItems.filter(
                     style={inputStyle}
                     value={form.assigned_to}
                     onChange={(e) => setForm({ ...form, assigned_to: e.target.value })}
-                    placeholder="Assigned employee"
+                    placeholder="Assigned Employee"
                   />
                 </div>
 
@@ -602,6 +602,10 @@ const pendingMatters = filteredItems.filter(
                 <button type="button" onClick={resetForm} style={buttonSecondary}>
                   Clear Form
                 </button>
+
+                <button onClick={handlePrint} style={buttonSecondary}>
+                  Print Report
+                </button>
               </div>
             </form>
           </div>
@@ -647,6 +651,7 @@ const pendingMatters = filteredItems.filter(
                 <option>Open</option>
                 <option>All</option>
                 <option>Completed</option>
+                <option>Print</option>
               </select>
             </div>
 
@@ -715,6 +720,7 @@ function ItemCard({ item, isManager, onEdit, onToggle, onTogglePin, onDelete }) 
 
   return (
     <div
+      className="print-item"
       style={{
         border: "1px solid #e2e8f0",
         borderRadius: 10,
@@ -772,7 +778,7 @@ function ItemCard({ item, isManager, onEdit, onToggle, onTogglePin, onDelete }) 
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: 8, alignItems: "start", flexWrap: "wrap" }}>
+        <div className="no-print" style={{ display: "flex", gap: 8, alignItems: "start", flexWrap: "wrap" }}>
           <button onClick={() => onEdit(item)} style={buttonSecondary}>
             Edit
           </button>
