@@ -21,9 +21,6 @@ function formatDate(value) {
     return value;
   }
 }
-function handlePrint() {
-  window.print();
-}
 
 const todayLabel = new Date().toLocaleDateString();
 
